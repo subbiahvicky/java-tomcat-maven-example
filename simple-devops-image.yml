@@ -1,0 +1,18 @@
+hosts: all
+become: yes
+tasks:
+
+ - name: create docker image using war file
+   command: docker build -t mavenproject:latest .
+   args:
+    chdir: /opt/docker
+
+ - name: create tag to image
+   command: docker tag mavenproject mivicky/mavenproject:latest
+
+ - name: push image on to dockerhub
+   command: docker push mivicky/mavenproject:latest
+
+ - name: remove docker images from ansible server
+   command: docker rmi mavenproject mivicky/mavenproject:latest
+   ignore_errors: yes

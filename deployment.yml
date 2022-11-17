@@ -1,0 +1,18 @@
+hosts: all
+become: yes
+
+tasks:
+
+ - name: stop current running container
+   command: docker stop mavenproject-container
+   ignore_errors: yes
+
+ - name: remove stopped docker container
+   command: docker rm -f mavenproject-container
+   ignore_errors: yes
+
+ - name: pull docker image from dockerhub
+   command: docker pull mivicky/mavenproject:latest
+
+ - name: creating docker container using mavenproject:latest
+   command: docker run -d --name mavenproject-container -p 8081:8080 mivicky/mavenproject:latest
